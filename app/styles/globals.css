@@ -1,0 +1,22 @@
+/* styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.animate-fadeIn { /* ... */ }
+
+@keyframes slideUp { /* ... (생략) */ }
+.animate-slideUp { /* ... */ }
+
+@keyframes bounceIn { /* ... (생략) */ }
+.animate-bounceIn { /* ... */ }
+
+@keyframes bounceX { /* ... (생략) */ }
+.animate-bounceX { /* ... */ }
+
+@keyframes pulseY { /* ... (생략) */ }
+.animate-pulseY { /* ... */ }
+
+@keyframes float { /* ... (생략) */ }
+.animate-float { /* ... */ }
