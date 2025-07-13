@@ -1,4 +1,4 @@
-// lib/api.js
+// lib/api.js 파일 전체 내용 (수정된 부분만 강조)
 
 /**
  * 새로운 팀을 생성하는 API 함수.
@@ -27,8 +27,8 @@ export const createTeam = async (teamData: object): Promise<object> => {
   }
 
   try {
-    // ⭐ API 엔드포인트는 /creatTeam 입니다. userId를 URL에 포함하지 않습니다.
-    const response = await fetch(`http://13.49.74.224:8080/creatTeam`, { 
+    // ⭐ 중요 수정: Next.js rewrites 설정을 사용하도록 엔드포인트 변경
+    const response = await fetch(`/api/creatTeam`, { // 🚨 '/api' 접두사를 사용하도록 변경
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
