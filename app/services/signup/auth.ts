@@ -160,7 +160,7 @@ export async function verifyAuthCode(email: string, code: string): Promise<Email
         // 🚨 백엔드의 EmailController가 @RequestMapping("/api/email")을 사용한다면,
         // 여기에 `/email` 접두사를 추가해야 합니다.
         // 예: `${API_BASE_URL}/email/verify-code`
-        const response = await axios.post<EmailVerifyCodeResponse>(`${API_BASE_URL}/email/verify-code`, { email, code });
+        const response = await axios.post<EmailVerifyCodeResponse>(`${API_BASE_URL}/verify-code`, { email, code });
 
         const responseData = response.data;
 
