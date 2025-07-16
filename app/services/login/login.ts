@@ -22,7 +22,7 @@ interface LoginResponse {
  */
 export async function login(payload: LoginPayload): Promise<LoginResponse> {
   // 백엔드 IP를 직접 사용하는 대신, Next.js rewrites를 통해 프록시될 '/api/login' 경로를 사용합니다.
-  const response = await fetch('/login', {
+  const response = await fetch('/api/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
