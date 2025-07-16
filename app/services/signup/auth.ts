@@ -127,7 +127,7 @@ export async function sendAuthCodeEmail(email: string): Promise<EmailSendCodeRes
         // 만약 백엔드 EmailController가 @RequestMapping("/api/email")이고 send-code 메서드가 @PostMapping("/send-code")라면,
         // `/${API_BASE_URL}/email/send-code` 가 맞습니다.
         // 현재 코드는 `API_BASE_URL`이 이미 `/api`를 포함하므로, `/email`만 추가하면 됩니다.
-        const response = await axios.post<EmailSendCodeResponse>(`${API_BASE_URL}/email/send-code`, { email });
+        const response = await axios.post<EmailSendCodeResponse>(`${API_BASE_URL}/send-code`, { email });
 
         // 서버 응답이 200 OK이더라도, result 필드가 "FAIL" 또는 "fail"이면 에러로 간주
         if (response.data.result === "FAIL" || response.data.result === "fail") {
