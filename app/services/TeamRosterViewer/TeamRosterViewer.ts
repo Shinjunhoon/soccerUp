@@ -161,7 +161,7 @@ export async function getTeams(): Promise<Team[]> {
   const token = getAuthTokenForClientOnlyCall();
   if (!token) { throw new Error('인증 토큰이 없습니다. 로그인해주세요.'); } // 인증 토큰 자체가 없을 때
   const headers: HeadersInit = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
-  const res = await fetch(`${API_BASE_URL}/searchTeam`, { headers: headers, cache: 'no-store' });
+  const res = await fetch(`${API_BASE_URL}/searchTeamByMember`, { headers: headers, cache: 'no-store' });
 
   if (!res.ok) {
     await handleApiError(res); // ⭐ 에러 처리 헬퍼 함수 호출 ⭐
