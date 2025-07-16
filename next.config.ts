@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
         source: '/api/:path*',
         // 🚨 여기를 http:// 에서 https:// 로 변경합니다.
         // Vercel이 백엔드로 요청을 보낼 때 HTTPS를 사용하도록 시도합니다.
-        destination: `https://13.49.74.224:8080/:path*`, // 🚨 중요: 여기를 https로 변경!
+        destination: `http://13.49.74.224:8080/:path*`, // 🚨 중요: 여기를 https로 변경!
       },
     ];
   },
