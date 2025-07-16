@@ -3,10 +3,9 @@ import axios from 'axios';
 
 // axios가 아직 설치되어 있지 않다면 'npm install axios' 또는 'yarn add axios'로 설치해주세요.
 
-// 백엔드 API 기본 URL
-// EmailController가 @RequestMapping("/api/email")을 사용하므로,
-// 일관성을 위해 기본 URL에 '/api'를 포함하는 것이 좋습니다.
-const API_BASE_URL = 'http://13.49.74.224:8080'; 
+// 🚨 백엔드 API 기본 URL을 Vercel rewrites의 source 경로와 동일하게 '/api'로 설정합니다.
+// 이렇게 하면 모든 API 호출이 Vercel 프록시를 거치게 됩니다.
+const API_BASE_URL = '/api'; 
 
 // --- 타입 정의 ---
 
@@ -52,10 +51,11 @@ export type EmailVerifyCodeResponse = ApiBackendResponse<boolean>;
  */
 export async function signup(payload: SignupPayload): Promise<SignupResponse> {
     try {
-        // 가정: 백엔드 회원가입 API는 /api 접두사 없이 직접 /register 경로를 사용
-        // (ex: http://localhost:8080/register).
-        // 백엔드의 UserController @RequestMapping을 확인하여 필요 시 수정하세요.
-        const response = await axios.post<SignupResponse>(`${API_BASE_URL.replace('/api', '')}/register`, payload);
+        // 🚨 경로를 '/api/register'로 수정합니다.
+        // 백엔드 UserController의 @RequestMapping이 없다면 '/register'가 맞겠지만,
+        // rewrites를 사용하므로 '/api/register' 형태로 호출하는 것이 일관됩니다.
+        // 백엔드 설정에 따라 /api/auth/register 등 추가 경로가 필요할 수 있습니다.
+        const response = await axios.post<SignupResponse>(`${API_BASE_URL}/register`, payload);
         
         // 서버 응답이 200 OK이더라도, result 필드가 "FAIL" 또는 "fail"이면 에러로 간주
         if (response.data.result === "FAIL" || response.data.result === "fail") {
@@ -89,10 +89,8 @@ export async function signup(payload: SignupPayload): Promise<SignupResponse> {
  */
 export async function checkUserIdDuplicate(userId: string): Promise<UserIdCheckResponse> {
     try {
-        // 가정: 백엔드 아이디 중복 확인 API는 /api 접두사 없이 직접 /checkUser 경로를 사용
-        // (ex: http://localhost:8080/checkUser).
-        // 백엔드의 UserController @RequestMapping을 확인하여 필요 시 수정하세요.
-        const response = await axios.post<UserIdCheckResponse>(`${API_BASE_URL.replace('/api', '')}/checkUser`, { userId });
+        // 🚨 경로를 '/api/checkUser'로 수정합니다.
+        const response = await axios.post<UserIdCheckResponse>(`${API_BASE_URL}/checkUser`, { userId });
         
         // 서버 응답이 200 OK이더라도, result 필드가 "FAIL" 또는 "fail"이면 에러로 간주
         if (response.data.result === "FAIL" || response.data.result === "fail") {
@@ -121,8 +119,15 @@ export async function checkUserIdDuplicate(userId: string): Promise<UserIdCheckR
  */
 export async function sendAuthCodeEmail(email: string): Promise<EmailSendCodeResponse> {
     try {
-        // 정확한 백엔드 이메일 API 경로: /api/email/send-code
-        const response = await axios.post<EmailSendCodeResponse>(`${API_BASE_URL}/send-code`, { email });
+        // 🚨 백엔드의 EmailController가 @RequestMapping("/api/email")을 사용한다면,
+        // 여기에 `/email` 접두사를 추가해야 합니다.
+        // 예: `${API_BASE_URL}/email/send-code`
+        // 현재는 API_BASE_URL이 '/api'이므로, 최종 경로는 '/api/send-code'가 됩니다.
+        // 백엔드에 EmailController의 정확한 @RequestMapping과 메서드별 @PostMapping 경로를 확인하여 수정하세요.
+        // 만약 백엔드 EmailController가 @RequestMapping("/api/email")이고 send-code 메서드가 @PostMapping("/send-code")라면,
+        // `/${API_BASE_URL}/email/send-code` 가 맞습니다.
+        // 현재 코드는 `API_BASE_URL`이 이미 `/api`를 포함하므로, `/email`만 추가하면 됩니다.
+        const response = await axios.post<EmailSendCodeResponse>(`${API_BASE_URL}/email/send-code`, { email });
 
         // 서버 응답이 200 OK이더라도, result 필드가 "FAIL" 또는 "fail"이면 에러로 간주
         if (response.data.result === "FAIL" || response.data.result === "fail") {
@@ -152,8 +157,10 @@ export async function sendAuthCodeEmail(email: string): Promise<EmailSendCodeRes
  */
 export async function verifyAuthCode(email: string, code: string): Promise<EmailVerifyCodeResponse> {
     try {
-        // 정확한 백엔드 이메일 API 경로: /api/email/verify-code
-        const response = await axios.post<EmailVerifyCodeResponse>(`${API_BASE_URL}/verify-code`, { email, code });
+        // 🚨 백엔드의 EmailController가 @RequestMapping("/api/email")을 사용한다면,
+        // 여기에 `/email` 접두사를 추가해야 합니다.
+        // 예: `${API_BASE_URL}/email/verify-code`
+        const response = await axios.post<EmailVerifyCodeResponse>(`${API_BASE_URL}/email/verify-code`, { email, code });
 
         const responseData = response.data;
 
