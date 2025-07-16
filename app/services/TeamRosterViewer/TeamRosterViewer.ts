@@ -1,8 +1,11 @@
 // lib/api.ts
+
 // 이 파일 자체에는 'use client'를 붙이지 않습니다.
 // 모든 API 호출 함수와 관련 인터페이스를 통합합니다.
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://13.49.74.224:8080';
+// 🚨 API_BASE_URL을 '/api'로 변경합니다.
+// 이렇게 하면 모든 API 호출이 Vercel rewrites를 통해 프록시되도록 합니다.
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || '/api';
 
 // ======================================================
 // 데이터 모델 인터페이스 정의
