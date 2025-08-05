@@ -17,7 +17,7 @@ import {
   getTeamMembersByTeamId,
   TeamMember,
   AuthError // AuthError 임포트
-} from '../services/TeamRosterViewer/TeamRosterViewer'
+} from '../api/TeamRosterViewer/TeamRosterViewer'
 
 import { useAuth } from '../context/AuthContext'; // useAuth 임포트
 import { useAuthErrorHandling } from '../context/useAuthErrorHandling'

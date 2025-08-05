@@ -7,7 +7,7 @@ import React, { useState, useEffect, useRef } from 'react';
 // 만약 services 폴더 바로 아래에 auth.ts가 있다면 아래처럼 변경해야 합니다.
 // import { signup, checkUserIdDuplicate, sendAuthCodeEmail, verifyAuthCode } from '../services/auth';
 // 현재는 '../services/signup/auth'로 되어있으니 이 경로를 유지합니다.
-import { signup, checkUserIdDuplicate, sendAuthCodeEmail, verifyAuthCode } from '../services/signup/auth'; 
+import { signup, checkUserIdDuplicate, sendAuthCodeEmail, verifyAuthCode } from '../api/signup/auth'; 
 import { useRouter } from 'next/navigation';
 
 export default function SignUpPage() {

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Users, Trophy, Plus, Sparkles, ArrowRight, Check, MapPin, Calendar, Briefcase, Zap, Info } from 'lucide-react';
-import { createTeam } from '../services/createTeam/createTeam'
+import { createTeam } from '../api/createTeam/createTeam'
 
 const CreateFootballSquad = () => {
   const [teamName, setTeamName] = useState('');

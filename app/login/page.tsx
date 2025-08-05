@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
-import { login as apiLogin } from '../services/login/login';
+import { login as apiLogin } from '../api/login/login';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 

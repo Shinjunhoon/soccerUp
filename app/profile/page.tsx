@@ -9,7 +9,7 @@ import { FaUserCircle, FaCopy } from 'react-icons/fa';
 import Link from 'next/link';
 
 // services/profile/profile.ts에서 AuthError와 API 함수들을 임포트합니다.
-import { getUserProfile, UserProfile, Team, AuthError } from '../services/profile/profile';
+import { getUserProfile, UserProfile, Team, AuthError } from '../api/profile/profile';
 // ⭐ SessionExpiredModal 컴포넌트를 새로 분리된 파일에서 임포트합니다. ⭐
 import SessionExpiredModal from '../components/SessionExpiredModal'
 

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Users, Send, User, MapPin, Trophy, Star, ArrowRight, Check } from 'lucide-react'; 
 // API 함수 임포트 경로 확인: 'lib/api' 또는 'services/TeamJoinRequest/TeamJoinRequest'
 // 여기서는 TeamJoinRequest.js (또는 .ts) 파일을 API 서비스로 가정합니다.
-import { getTeamDetailsByInviteCode, joinTeam } from '../services/TeamJoinRequest/TeamJoinRequest';
+import { getTeamDetailsByInviteCode, joinTeam } from '../api/TeamJoinRequest/TeamJoinRequest';
 
 const positions = {
   'GK': { name: '골키퍼', color: 'from-yellow-400 to-orange-500' },

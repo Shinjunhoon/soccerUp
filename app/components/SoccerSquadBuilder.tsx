@@ -16,7 +16,7 @@ import {
   SquadRequestDto,    
   SquadPositionRequestDto,
   AuthError // AuthError 임포트
-} from '../services/TeamRosterViewer/TeamRosterViewer'; // 경로 확인
+} from '../api/TeamRosterViewer/TeamRosterViewer'; // 경로 확인
 
 import { useAuth } from '../context/AuthContext'; // useAuth 임포트
 import { useAuthErrorHandling } from '../context/useAuthErrorHandling'

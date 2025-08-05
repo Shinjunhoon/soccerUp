@@ -19,6 +19,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
+      {/* 구글 소유권 확인 메타 태그가 여기에 추가되었습니다. */}
+      <head>
+        <meta name="google-site-verification" content="N726bMBSRpKowCq10x_q-fJoOuERg5El7JXxm3tgD7o" />
+      </head>
       <body className={inter.className}>
         <AuthProvider> {/* 애플리케이션을 AuthProvider로 감쌉니다 */}
           <Header /> {/* Header 컴포넌트가 이제 인증 컨텍스트에 접근할 수 있습니다 */}
