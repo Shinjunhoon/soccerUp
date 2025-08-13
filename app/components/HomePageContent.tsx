@@ -3,9 +3,9 @@
 
 import Link from 'next/link';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useRouter } from 'next/navigation'; // ✨ 이처럼 수정해야 합니다!
+import { useRouter } from 'next/navigation';
 
-// 필드 선수 정보를 위한 로컬 인터페이스 정의 (SoccerSquadBuilder.tsx에서 가져옴)
+// ... (인터페이스 및 유틸리티 함수 코드는 동일)
 interface FieldPlayer {
   id: string;
   position: 'GK' | 'LB' | 'CB' | 'RB' | 'CM' | 'LM' | 'RM' | 'LW' | 'ST' | 'RW' | 'LWB' | 'RWB' | 'CDM' | 'CAM' | 'CF' | 'LF' | 'RF' | 'LCB' | 'RCB' | 'LCM' | 'RCM' | 'SW' | 'SS' | 'CF';
@@ -15,14 +15,12 @@ interface FieldPlayer {
   playerId: number | null;
 }
 
-// 벤치 및 선택된 선수 정보를 위한 로컬 인터페이스 정의 (SoccerSquadBuilder.tsx에서 가져옴)
 interface SquadPlayer {
-  id: number; // playerId와 일치
+  id: number;
   username: string;
   position: 'FW' | 'MF' | 'DF' | 'GK';
 }
 
-// deepEqual 유틸리티 함수 (필요에 따라 유지)
 const deepEqual = (obj1: any, obj2: any): boolean => {
   if (obj1 === obj2) return true;
 
@@ -51,7 +49,6 @@ const deepEqual = (obj1: any, obj2: any): boolean => {
   return true;
 };
 
-// 부유하는 요소 속성을 위한 타입 정의 추가
 interface FloatingElementProps {
   left: string;
   top: string;
@@ -59,38 +56,30 @@ interface FloatingElementProps {
   animationDuration: string;
 }
 
+
 export default function HomePageContent() {
   const router = useRouter();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
   const [floatingElements, setFloatingElements] = useState<FloatingElementProps[]>([]);
-
-  // ⭐ isAuthenticated 상태 추가 및 초기화 ⭐
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    // 클라이언트 사이드에서만 실행되도록 window 객체 확인
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('accessToken'); // localStorage에서 토큰 확인
-      setIsAuthenticated(!!token); // 토큰이 있으면 true, 없으면 false
+      const token = localStorage.getItem('accessToken');
+      setIsAuthenticated(!!token);
     }
   }, []);
 
-  // ⭐ handleFeatureClick 함수 추가 ⭐
   const handleFeatureClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
     if (!isAuthenticated) {
-      e.preventDefault(); // 기본 링크 이동 방지
-      alert('로그인이 필요합니다.'); // 알림 메시지 표시
-      // 선택적으로 로그인 페이지로 리다이렉트할 수 있습니다.
-      // router.push('/login');
+      e.preventDefault();
+      alert('로그인이 필요합니다.');
     } else {
-      // 로그인되어 있으면 기본 링크 동작 허용 (Next.js Link 컴포넌트가 처리)
-      // 또는 명시적으로 router.push(path); 를 호출할 수도 있습니다.
     }
-  }, [isAuthenticated]); // isAuthenticated가 변경될 때마다 함수 재생성
+  }, [isAuthenticated]);
 
-  // ⭐ 데모 스쿼드 빌더를 위한 상태 ⭐
   const demoFormations = useMemo(() => ({
     '4-4-2': [
       { id: 'gk', position: 'GK', x: 50, y: 90, name: '', playerId: null },
@@ -105,9 +94,8 @@ export default function HomePageContent() {
       { id: 'st1', position: 'ST', x: 40, y: 20, name: '', playerId: null },
       { id: 'st2', position: 'ST', x: 60, y: 20, name: '', playerId: null },
     ],
-  }), []) as { [key: string]: FieldPlayer[] }; // ⭐ 타입 단언 추가
+  }), []) as { [key: string]: FieldPlayer[] };
 
-  // 데모 필드 플레이어 초기 상태 (4-4-2)
   const initialDemoFieldPlayers: FieldPlayer[] = useMemo(() =>
     demoFormations['4-4-2'].map(p => ({ ...p, name: '', playerId: null }))
   , [demoFormations]);
@@ -116,7 +104,6 @@ export default function HomePageContent() {
   const [demoSelectedPlayer, setDemoSelectedPlayer] = useState<SquadPlayer | null>(null);
   const [demoDraggedPlayer, setDemoDraggedPlayer] = useState<string | null>(null);
 
-  // 데모 벤치 선수 목록
   const mockBenchPlayers: SquadPlayer[] = useMemo(() => [
     { id: 1, username: '손흥민', position: 'FW' },
     { id: 2, username: '이강인', position: 'MF' },
@@ -130,13 +117,11 @@ export default function HomePageContent() {
     { id: 10, username: '권경원', position: 'DF' },
   ], []);
 
-  // 필드 선수 클릭 핸들러 (데모용)
   const handleDemoFieldPlayerClick = useCallback((fieldPositionId: string) => {
     const targetPosition = demoFieldPlayers.find(p => p.id === fieldPositionId);
     if (!targetPosition) return;
 
     if (demoSelectedPlayer) {
-      // 선택된 선수를 필드에 배치
       const updatedFieldPlayers = demoFieldPlayers.map(player =>
         player.id === fieldPositionId
           ? {
@@ -149,7 +134,6 @@ export default function HomePageContent() {
       setDemoFieldPlayers(updatedFieldPlayers);
       setDemoSelectedPlayer(null);
     } else {
-      // 필드에 있는 선수를 선택 해제하거나 벤치로 되돌림
       if (targetPosition.name && targetPosition.playerId !== null) {
         const originalPlayerInBench = mockBenchPlayers.find(bp => bp.id === targetPosition.playerId);
         setDemoSelectedPlayer({
@@ -167,7 +151,6 @@ export default function HomePageContent() {
     }
   }, [demoSelectedPlayer, demoFieldPlayers, mockBenchPlayers]);
 
-  // 벤치 선수 클릭 핸들러 (데모용)
   const handleDemoBenchPlayerClick = useCallback((player: SquadPlayer) => {
     if (demoSelectedPlayer && demoSelectedPlayer.id === player.id) {
       setDemoSelectedPlayer(null);
@@ -176,7 +159,6 @@ export default function HomePageContent() {
     }
   }, [demoSelectedPlayer]);
 
-  // 드래그 시작 핸들러 (데모용)
   const handleDemoDragStart = useCallback((e: React.DragEvent<HTMLDivElement>, fieldPositionId: string) => {
     const playerOnField = demoFieldPlayers.find(p => p.id === fieldPositionId);
     if (playerOnField && playerOnField.name) {
@@ -187,13 +169,11 @@ export default function HomePageContent() {
     }
   }, [demoFieldPlayers]);
 
-  // 드래그 오버 핸들러 (데모용)
   const handleDemoDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
   }, []);
 
-  // 드롭 핸들러 (데모용)
   const handleDemoDrop = useCallback((e: React.DragEvent<HTMLDivElement>, targetFieldPositionId: string) => {
     e.preventDefault();
 
@@ -224,14 +204,11 @@ export default function HomePageContent() {
     setDemoDraggedPlayer(null);
   }, [demoDraggedPlayer, demoFieldPlayers]);
 
-  // 데모 스쿼드 초기화 버튼 핸들러
   const handleResetDemoSquad = useCallback(() => {
     setDemoFieldPlayers(initialDemoFieldPlayers);
     setDemoSelectedPlayer(null);
     setDemoDraggedPlayer(null);
   }, [initialDemoFieldPlayers]);
-  // ⭐ 데모 스쿼드 빌더를 위한 상태 끝 ⭐
-
 
   useEffect(() => {
     setIsVisible(true);
@@ -240,12 +217,10 @@ export default function HomePageContent() {
     };
     window.addEventListener('mousemove', handleMouseMove);
 
-    // Auto-rotate features
     const interval = setInterval(() => {
       setActiveFeature((prev) => (prev + 1) % 4);
     }, 5000);
 
-    // ⭐ 클라이언트 측에서만 부유하는 요소 데이터 생성 ⭐
     const newFloatingElements: FloatingElementProps[] = [...Array(12)].map(() => ({
       left: `${10 + Math.random() * 80}%`,
       top: `${5 + Math.random() * 90}%`,
@@ -254,12 +229,11 @@ export default function HomePageContent() {
     }));
     setFloatingElements(newFloatingElements);
 
-
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       clearInterval(interval);
     };
-  }, []); // 빈 의존성 배열은 이 훅이 컴포넌트 마운트 시 한 번만 실행되도록 보장합니다.
+  }, []);
 
   const features = [
     {
@@ -313,7 +287,7 @@ export default function HomePageContent() {
 
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {floatingElements.map((props, i) => ( // ⭐ 상태 변수를 사용하여 렌더링 ⭐
+        {floatingElements.map((props, i) => (
           <div
             key={i}
             className="absolute animate-pulse"
@@ -344,13 +318,13 @@ export default function HomePageContent() {
                   함께 만드는
                 </span>
                 <br />
-                <span className="text-white">축구 드림팀</span>
+                <span className="text-white">축구 스쿼드 메이커</span>
               </h1>
 
               <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12 leading-relaxed">
                 팀을 만들고 <span className="text-green-400 font-semibold">지인들을 초대</span>하여
                 <br />
-                모두가 함께 참여하는 <span className="text-blue-400 font-semibold">협업 스쿼드 구성</span>
+                모두가 함께 참여하는 <span className="text-blue-400 font-semibold">협업 스쿼드 구성과 관리</span>
               </p>
 
               {/* CTA Buttons */}
@@ -361,7 +335,7 @@ export default function HomePageContent() {
                   className={`group relative px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden ${
                     isAuthenticated
                       ? 'bg-gradient-to-r from-green-600 to-blue-600 hover:shadow-green-500/25'
-                      : 'bg-gray-600 opacity-50 cursor-not-allowed' // ⭐ 비활성화 스타일 추가 ⭐
+                      : 'bg-gray-600 opacity-50 cursor-not-allowed'
                   }`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -462,7 +436,7 @@ export default function HomePageContent() {
                 협업의 <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">새로운 차원</span>
               </h2>
               <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                팀원들과 함께 만들어가는 스쿼드 구성의 즐거움을 경험하세요
+                팀원들과 함께 만들어가는 **축구 스쿼드** 구성의 즐거움을 경험하세요
               </p>
             </div>
 
@@ -525,10 +499,10 @@ export default function HomePageContent() {
               <div className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-xl rounded-3xl p-12 border border-white/10">
                 <div className="text-center mb-12">
                   <h3 className="text-3xl font-bold text-white mb-4">
-                    팀 스쿼드 미리보기
+                    **스쿼드 메이커** 미리보기
                   </h3>
                   <p className="text-gray-400">
-                    팀원들이 함께 참여하여 스쿼드를 구성하는 모습을 확인해보세요
+                    팀원들이 함께 참여하여 **축구 스쿼드**를 구성하는 모습을 확인해보세요
                   </p>
                 </div>
 
@@ -650,21 +624,20 @@ export default function HomePageContent() {
         <section className="py-20 px-6">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              친구들과 함께 시작하세요
+              친구들과 함께 **스쿼드 관리**를 시작하세요
             </h2>
             <p className="text-xl text-gray-400 mb-12">
-              지금 팀을 만들고 지인들을 초대하여 완벽한 스쿼드를 구성해보세요
+              지금 팀을 만들고 지인들을 초대하여 완벽한 **축구 스쿼드**를 구성해보세요
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/create-team"
-                // 🚨 isAuthenticated에 따라 클래스 및 onClick 핸들러 추가
                 onClick={(e) => handleFeatureClick(e, '/create-team')}
                 className={`group inline-flex items-center px-12 py-6 rounded-full text-white font-bold text-xl shadow-2xl transition-all duration-300 transform hover:scale-105 relative overflow-hidden ${
                   isAuthenticated
                     ? 'bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 hover:shadow-green-500/25'
-                    : 'bg-gray-600 opacity-50 cursor-not-allowed' // ⭐ 비활성화 스타일 추가 ⭐
+                    : 'bg-gray-600 opacity-50 cursor-not-allowed'
                 }`}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>

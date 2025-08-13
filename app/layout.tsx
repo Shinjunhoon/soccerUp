@@ -8,8 +8,9 @@ import { Toaster } from 'react-hot-toast'; // ⭐ Toaster 컴포넌트 임포트
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: '⚽ 나의 스쿼드 메이커',
-  description: '나만의 축구 스쿼드를 만들고 관리하세요.',
+  title: '⚽ 축구 스쿼드 만들기 | 나만의 팀 관리 앱', 
+  
+  description: '최고의 축구 스쿼드 관리 앱. 나만의 드림팀을 만들고, 선수 포지션을 설정하며, 팀원들을 효과적으로 관리하세요.',
 };
 
 export default function RootLayout({
